@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table, tr, th, td {
+        border: 2px solid red;
+        border-collapse: collapse;
+      width: 500px; 
+      text-align: center
+    }
+  tr:hover {
+    background-color: yellow
+  }
+
+    
+  #editor {display: none}
+  .del {display: none}
+</style>
+<!--    ------------------------------------------------->
+<body>
+    <table id="table">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>AGE</th>
+        </tr>
+    </table>
+    <!-- ======================= -->
+    <button id='add' onclick='block("editor")'>ADD</button> 
+    <button id='change'>CHANGE</button>
+    <button id='del' onclick='blockdel(".del")'>DELETE</button>
+    <!-- -------------------------------- -->
+    <div id="editor">
+        <label for="id">ID: </label>
+        <input type="number" id="id" value="" required>
+        <label for="name">NAME: </label>
+        <input type="text" id="name" value="" required>
+        <label for="age">AGE: </label>
+        <input type="number" id="age" value="" required>
+        <input type="submit" value="DONE" id="done" onclick="kt()">
+        <input type="submit" value="CAN" id="can" onclick="cancel('editor')">
+    </div>
+<!--   ========================================== -->
+</body>
+
+<script>
+    var sid = document.getElementById('id')
+    var sname = document.getElementById('name')
+    var sage = document.getElementById('age')
+    var stable = document.getElementById('table')
+    
+  function block(b){
+      document.getElementById(b).style.display = 'block'
+  }
+  function blockdel(dis) {
+    document.querySelectorAll(dis).style.display = 'block';
+  }
+  function cancel(c) {
+    document.getElementById(c).style.display = 'none'
+  }
+  // ==========================================
+  
+    function kt() {
+        if ((sid.value && sname.value && sage.value) !== "") {
+            add()
+        } else {alert('DẠ THƯA ÔNG, ÔNG ĐIỀN ĐẦY ĐỦ THÔNG TIN GIÙM CON Ạ!')}
+    }
+
+    var data = []
+    function add() {
+        var item = {
+            Id: sid.value,
+            Name: sname.value,
+            Age: sage.value
+        }
+        data.push(item)
+        console.log(data)
+        render()
+        
+        
+        cancel("editor")
+        clean()
+    }
+    function render() {
+        var ntable = `<tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>AGE</th>
+        </tr>`
+        for (var i = 0; i < data.length; i++) {
+            ntable += `<tr>
+                <td>${data[i].Id}</td>
+                <td>${data[i].Name}</td>
+                <td>${data[i].Age}<button class="del" onclick='fdelete(${data[i].Id})'>DEL</button></td>
+                </tr>`
+        }
+        stable.innerHTML = ntable        
+    }
+  function clean() {
+      sid.value = ''
+      sname.value = ''
+      sage.value = ''
+  }
+  // ==========================================
+
+//  delete
+
+function fdelete(idel) {
+    for (let i = 0; i<data.length;i++){
+        if (data[i].Id==idel) {
+            data.splice(i,1)
+            render()
+        }
+    }
+}
+
+  
+</script>
+</html>
